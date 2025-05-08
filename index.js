@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
@@ -40,11 +40,11 @@ const port = process.env.PORT || 5000;
 connectDB().then(() => {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
-    const imagesPath = path.join(__dirname, '..', 'mern-front', 'public', 'images');
+    const imagesPath = path.join(__dirname, '..', 'Proshop-frontend', 'public', 'images');
     import('fs').then(fs => {
       if (!fs.existsSync(imagesPath)) {
         fs.mkdirSync(imagesPath, { recursive: true });
-        console.log('Images directory created in mern-front/public');
+        console.log('Images directory created in Proshop-frontend/public');
       }
     });
   });
