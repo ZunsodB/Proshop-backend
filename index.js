@@ -18,7 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: ["https://shadowshop.vercel.app"],
+    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
 );
