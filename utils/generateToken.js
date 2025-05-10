@@ -7,8 +7,8 @@ const generateToken = (res, userId) => {
     res.cookie('jwt', token, {
         httpOnly: true,
         expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        secure: process.env.NODE_ENV !== 'development',
-        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production', // Ensures 'secure: true' on Vercel
+        sameSite: 'None', // <<< --- IMPORTANT CHANGE FOR CROSS-SITE COOKIES
         maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 };
