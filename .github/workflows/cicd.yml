@@ -1,10 +1,7 @@
-name: Deploy Node Application
+name: Deploy Node.js Application
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -12,24 +9,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Login to docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Build Docker Image
         run: docker build -t zunsod/proshop-backend .
 
-      - name: Publish Image to docker hub
+      - name: Push Docker Image to Docker Hub
         run: docker push zunsod/proshop-backend:latest
 
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Pull image from docker hub
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Pull Docker Image from Docker Hub
         run: docker pull zunsod/proshop-backend:latest
 
-      - name: Run docker container
-        run: docker run -d -p 5000:5000 --name proshop-backend-container -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' zunsod/proshop-backend:latest
+      - name: Stop and Remove Old Container
+        run: docker rm -f proshop-backend-container || true
+
+      - name: Run Docker Container with .env File
+        run: |
+          docker run -d \
+          --name proshop-backend-container \
+          -p 5000:5000 \
+          --env-file .env \
+          zunsod/proshop-backend:latest
