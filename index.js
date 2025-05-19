@@ -31,6 +31,7 @@ app.use(
     credentials: true,
   })
 );
+console.log('CORS allowed origins:', allowedOrigins);
 
 // Root route
 app.get('/', (req, res) => {
