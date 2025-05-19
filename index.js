@@ -36,7 +36,7 @@ app.use(
 app.get('/', (req, res) => {
   res.send('Backend API is running');
 });
-
+console.log("alnaa")
 // API routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
