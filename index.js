@@ -31,7 +31,7 @@ app.use(
     credentials: true,
   })
 );
-
+console.log("untuya")
 // Root route
 app.get('/', (req, res) => {
   res.send('Backend API is running');
