@@ -31,5 +31,10 @@ jobs:
       - name: Pull image from docker hub
         run: docker pull zunsod/proshop-backend:latest
 
+      - name: Stop and remove existing container
+        run: |
+          docker stop proshop-backend-container || true
+          docker rm proshop-backend-container || true
+
       - name: Run docker container
         run: docker run -d -p 5000:5000 --name proshop-backend-container -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' zunsod/proshop-backend:latest
