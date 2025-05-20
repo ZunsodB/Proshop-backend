@@ -26,7 +26,7 @@ app.use(cookieParser());
 const allowedOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [];
 app.use(
   cors({
-    origin: 'http://3.95.159.188:3000',
+    origin: allowedOrigins,
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
